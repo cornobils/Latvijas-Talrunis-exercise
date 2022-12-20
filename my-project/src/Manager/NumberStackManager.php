@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Manager;
 
@@ -7,10 +8,10 @@ use App\Model\PushModel;
 use App\Registry\NumberStackRegistry;
 use NumberFormatter;
 
-final class NumberStackManager
+final class NumberStackManager implements NumberStackManagerInterface
 {
     private NumberStackRegistry $numberStackRegistry;
-    private FormatterManager $formatterManager;
+    private FormatterManagerInterface $formatterManager;
 
     public function __construct(NumberStackRegistry $numberStackRegistry, FormatterManager $formatterManager)
     {

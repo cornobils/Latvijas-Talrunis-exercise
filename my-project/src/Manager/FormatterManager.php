@@ -1,11 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Manager;
 
 use NumberFormatter;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-final class FormatterManager
+final class FormatterManager implements FormatterManagerInterface
 {
     private RequestStack $requestStack;
 
