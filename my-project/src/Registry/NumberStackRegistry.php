@@ -2,6 +2,7 @@
 
 namespace App\Registry;
 
+use App\Exception\StackEmptyException;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Adapter\PhpArrayAdapter;
@@ -26,12 +27,15 @@ final class NumberStackRegistry
         );
         $item = $cache->getItem(self::ITEM_NUMBERS);
         $stack = $item->get();
-        dump($stack);
         $stack->push($number);
         $item->set($stack);
         $cache->save($item);
     }
 
+    /**
+     * @return int
+     * @throws StackEmptyException
+     */
     public function pop()
     {
         $cache = new PhpArrayAdapter(
@@ -41,6 +45,9 @@ final class NumberStackRegistry
         $item = $cache->getItem(self::ITEM_NUMBERS);
         /** @var \SplStack $stack */
         $stack = $item->get();
+        if ($stack->isEmpty()) {
+            throw new StackEmptyException();
+        }
         $result = $stack->pop();
         $item->set($stack);
         $cache->save($item);

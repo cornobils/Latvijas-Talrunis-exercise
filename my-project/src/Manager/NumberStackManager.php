@@ -2,6 +2,8 @@
 
 namespace App\Manager;
 
+use App\Exception\StackEmptyException;
+use App\Model\PushModel;
 use App\Registry\NumberStackRegistry;
 use NumberFormatter;
 
@@ -14,14 +16,19 @@ final class NumberStackManager
         $this->numberStackRegistry = $numberStackRegistry;
     }
 
-    public function onPush(int $number): void
+    public function onPush(PushModel $pushModel): void
     {
-        $this->numberStackRegistry->addNumber($number);
+        $this->numberStackRegistry->addNumber($pushModel->getNumber());
     }
 
     public function onPop(): string
     {
-        $number = $this->numberStackRegistry->pop();
+        try {
+            $number = $this->numberStackRegistry->pop();
+        } catch (StackEmptyException $e) {
+            return 'Empty queue';
+        }
+
         return NumberFormatter::create('en', NumberFormatter::SPELLOUT)->format($number);
     }
 }
