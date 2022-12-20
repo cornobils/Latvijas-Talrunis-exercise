@@ -10,10 +10,12 @@ use NumberFormatter;
 final class NumberStackManager
 {
     private NumberStackRegistry $numberStackRegistry;
+    private FormatterManager $formatterManager;
 
-    public function __construct(NumberStackRegistry $numberStackRegistry)
+    public function __construct(NumberStackRegistry $numberStackRegistry, FormatterManager $formatterManager)
     {
         $this->numberStackRegistry = $numberStackRegistry;
+        $this->formatterManager = $formatterManager;
     }
 
     public function onPush(PushModel $pushModel): void
@@ -29,6 +31,6 @@ final class NumberStackManager
             return 'Empty queue';
         }
 
-        return NumberFormatter::create('en', NumberFormatter::SPELLOUT)->format($number);
+        return $this->formatterManager->format($number);
     }
 }
