@@ -3,6 +3,7 @@
 namespace App\Manager;
 
 use App\Registry\NumberStackRegistry;
+use NumberFormatter;
 
 final class NumberStackManager
 {
@@ -13,13 +14,14 @@ final class NumberStackManager
         $this->numberStackRegistry = $numberStackRegistry;
     }
 
-    public function onPop()
-    {
-
-    }
-
-    public function onPush(int $number)
+    public function onPush(int $number): void
     {
         $this->numberStackRegistry->addNumber($number);
+    }
+
+    public function onPop(): string
+    {
+        $number = $this->numberStackRegistry->pop();
+        return NumberFormatter::create('en', NumberFormatter::SPELLOUT)->format($number);
     }
 }

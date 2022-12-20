@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Manager\NumberStackManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,8 +30,12 @@ final class NumberStackController extends AbstractController
     /**
      * @Route("/pop", name="app_pop")
      */
-    public function pop(Request $request): Response
+    public function pop(): Response
     {
-        return new Response('kek');
+        $message = $this->numberStackManager->onPop();
+
+        return new JsonResponse([
+            'message' => $message,
+        ]);
     }
 }
